@@ -109,8 +109,32 @@ export const controllerUsers = {
       });
     }
   },
-  delete: (req: Request, res: Response) => {
+  delete: async (req: Request, res: Response) => {
     const { id } = req.params;
+
+    try {
+      const user = await dbUsers.findUserById(id);
+
+      if (!user[0]) {
+        return res.status(404).json({
+          message: "Usuário não encontrado!",
+          data: {},
+        });
+      }
+
+      await dbUsers.deleteUser(id);
+
+      return res.status(200).json({
+        message: "Usuário deletado com sucesso!",
+        data: {},
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao deletar usuário!",
+        data: {},
+      });
+    }
+
     return res.send("delete");
   },
 };

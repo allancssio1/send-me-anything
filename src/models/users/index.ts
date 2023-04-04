@@ -28,4 +28,9 @@ export const dbUsers = {
       data: user,
     });
   },
+  deleteUser: async (id: string): Promise<void> => {
+    await prisma.user.delete({
+      where: { id },
+    });
+  },
 };
