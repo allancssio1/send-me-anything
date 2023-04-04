@@ -11,11 +11,21 @@ export const dbUsers = {
     return user;
   },
   findUsers: async (): Promise<any> => {
-    const user = await prisma.user.findMany();
-
-    return user;
+    return await prisma.user.findMany();
   },
-  findAllUsers: async () => {
-    return prisma.user.findMany();
+  findUserById: async (id: string): Promise<any> => {
+    return prisma.user.findMany({
+      where: {
+        id,
+      },
+    });
+  },
+  updateUser: async (user: any): Promise<any> => {
+    return prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: user,
+    });
   },
 };
