@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
+import { db } from "../../models/products";
 
 export const controllerUsers = {
-  create: (req: Request, res: Response) => {
+  create: async (req: Request, res: Response) => {
     const { body } = req;
-    return res.send("create");
+
+    const user = await db.createUser(body);
+    console.log("controller ~ user:", user);
+
+    return res.json(user);
   },
   getAll: (req: Request, res: Response) => {
     return res.send("all");
