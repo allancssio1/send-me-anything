@@ -15,7 +15,7 @@ const ValidationBody = (req: Request, res: Response, next: NextFunction) => {
 
   Object.entries(req.body).find(([key, value]) => {
     if (!bodyValid.includes(key)) {
-      req.body = {};
+      req.body = null;
       return true;
     }
   });
