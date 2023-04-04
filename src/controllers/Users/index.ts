@@ -1,16 +1,31 @@
 import { Request, Response } from "express";
-import { db } from "../../models/products";
+import { dbUsers } from "../../models/users";
 
 export const controllerUsers = {
   create: async (req: Request, res: Response) => {
     const { body } = req;
 
-    const user = await db.createUser(body);
-    console.log("controller ~ user:", user);
+    try {
+      const user = await dbUsers.createUser(body);
 
-    return res.json(user);
+      return res.status(201).json({
+        message: "Usuário criado com sucesso",
+        data: {
+          name: user.name,
+          email: user.email,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao criar usuário",
+        data: {},
+      });
+    }
   },
-  getAll: (req: Request, res: Response) => {
+  getAll: async (req: Request, res: Response) => {
+    try {
+      const users = await dbUsers.findAllUsers();
+    } catch (error) {}
     return res.send("all");
   },
   findUserById: (req: Request, res: Response) => {
