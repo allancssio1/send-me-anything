@@ -5,19 +5,93 @@ export const controllerProducts = {
   create: async (req: Request, res: Response) => {
     const { body } = req;
 
-    return res.send("create");
+    if (!body)
+      return res.status(400).json({
+        message: "Corpo da requisição incorreto!",
+        data: {},
+      });
+
+    try {
+      const product = await dbProduct.createProduct(body);
+
+      return res.status(201).json({
+        message: "Produto criado com sucesso",
+        data: product,
+      });
+    } catch (error: any) {
+      console.log("🚀 ~ file: index.ts:22 ~ create: ~ error:", error);
+      return res.status(500).json({
+        message: `Erro ao criar usuário!`,
+        data: {},
+      });
+    }
   },
   getAll: async (req: Request, res: Response) => {
-    const productis = await dbProduct.getAllProduct();
-    return res.json(productis);
+    try {
+      const products = await dbProduct.getAllProduct();
+
+      if (!products[0])
+        return res.status(404).json({
+          message: "Não foram encontrados usuários!",
+          data: {},
+        });
+
+      return res.status(200).json({
+        message: "Usuários encontrados com sucesso!",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao buscar usuários!",
+        data: {},
+      });
+    }
   },
-  findProductById: (req: Request, res: Response) => {
+  findProductById: async (req: Request, res: Response) => {
     const { id } = req.params;
-    return res.send("findOne");
+
+    try {
+      const product = await dbProduct.findProductById(id);
+
+      if (!product)
+        return res.status(404).json({
+          message: "Não foram encontrados produdos!",
+          data: {},
+        });
+
+      return res.status(200).json({
+        message: "Produtos encontrados com sucesso!",
+        data: product,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao buscar produtos!",
+        data: {},
+      });
+    }
   },
-  findProductByRecipientId: (req: Request, res: Response) => {
+  findProductByRecipientId: async (req: Request, res: Response) => {
     const { id } = req.params;
-    return res.send("findOne");
+
+    try {
+      const products = await dbProduct.findProductByRecipienId(id);
+
+      if (!products[0])
+        return res.status(404).json({
+          message: "Não foram encontrados produdos!",
+          data: {},
+        });
+
+      return res.status(200).json({
+        message: "Produtos encontrados com sucesso!",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao buscar produtos!",
+        data: {},
+      });
+    }
   },
   findProductBySendedId: (req: Request, res: Response) => {
     const { id } = req.params;
