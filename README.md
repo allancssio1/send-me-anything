@@ -22,12 +22,15 @@ Projeto criado para atender um desafio particular.
 - Metodo GET com rota /products/all para trazer todos os produtos;
   -- Body: Não há;
 - Metodo POST com rota /products/create para criar um produto;
-  -- Body: {
+  -- Body:
+  ```sh
+  {
   "name": "laranja",
   "description": "paconte de laranja",
   "senderId": "0020b15e-020c-448d-b03c-5ff74ee1fa5c",
   "recipientId": "99ff928a-c05f-491c-95dd-0475c5ea3b35"
   };
+  ```
 - Metodo GET com rota /products/:id para trazer um produto expecífico;
 - Metodo GET com rota /products/recipient/:id para trazer todos os produtos ligados ao distinatário;
 - Metodo GET com rota /products/sender/:id para trazer todos os produtos ligados ao remetente;
