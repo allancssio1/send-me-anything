@@ -20,4 +20,17 @@ export const dbProduct = {
     });
     return products;
   },
+  findProductBySenderId: async (id: string): Promise<any> => {
+    const products = await prisma.product.findMany({
+      where: { senderId: id },
+    });
+    return products;
+  },
+  updateProduct: async (body: any): Promise<any> => {
+    return await prisma.product.update({
+      where: { id: body.id },
+      data: body,
+    });
+  },
+  deleteProduct: async (id: string): Promise<any> => {},
 };

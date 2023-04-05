@@ -93,16 +93,96 @@ export const controllerProducts = {
       });
     }
   },
-  findProductBySendedId: (req: Request, res: Response) => {
+  findProductBySendedId: async (req: Request, res: Response) => {
     const { id } = req.params;
-    return res.send("findOne");
+
+    try {
+      const products = await dbProduct.findProductBySenderId(id);
+
+      if (!products[0])
+        return res.status(404).json({
+          message: "Não foram encontrados produdos!",
+          data: {},
+        });
+
+      return res.status(200).json({
+        message: "Produtos encontrados com sucesso!",
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao buscar produtos!",
+        data: {},
+      });
+    }
   },
-  update: (req: Request, res: Response) => {
-    const { id } = req.params;
-    return res.send("update");
+  update: async (req: Request, res: Response) => {
+    const {
+      params: { id },
+      body,
+    } = req;
+
+    if (!body) {
+      return res.status(400).json({
+        message: "Corpo da requisição incorreto!",
+        data: {},
+      });
+    }
+
+    try {
+      const product = await dbProduct.findProductById(id);
+
+      if (!product)
+        return res.status(404).json({
+          message: "Produto não encontrado!",
+          data: {},
+        });
+
+      const updatedProduct = {
+        ...product,
+        name: body && body.name ? body.name : product.name,
+        email: body && body.email ? body.email : product.email,
+        address: body && body.address ? body.address : product.address,
+        code: body && body.code ? body.code : product.code,
+      };
+
+      await dbProduct.updateProduct(updatedProduct);
+
+      return res.status(200).json({
+        message: "Sucesso ao atualizar o produto!",
+        data: updatedProduct,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao atualizar usuário!",
+        data: {},
+      });
+    }
   },
-  delete: (req: Request, res: Response) => {
+  delete: async (req: Request, res: Response) => {
     const { id } = req.params;
-    return res.send("delete");
+
+    try {
+      const user = await dbProduct.findProductById(id);
+
+      if (!user) {
+        return res.status(404).json({
+          message: "Usuário não encontrado!",
+          data: {},
+        });
+      }
+
+      await dbProduct.deleteProduct(id);
+
+      return res.status(200).json({
+        message: "Usuário deletado com sucesso!",
+        data: {},
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao deletar usuário!",
+        data: {},
+      });
+    }
   },
 };
