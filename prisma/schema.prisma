@@ -18,6 +18,7 @@ model Product {
   updatedAt   DateTime @default(now())
   senderId    String
   recipientId String
+  canceled    Boolean  @default(false)
 
   @@map("products")
 }
