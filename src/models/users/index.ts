@@ -14,9 +14,16 @@ export const dbUsers = {
     return await prisma.user.findMany();
   },
   findUserById: async (id: string): Promise<any> => {
-    return prisma.user.findMany({
+    return prisma.user.findFirst({
       where: {
         id,
+      },
+    });
+  },
+  findUserByEmail: async (email: string): Promise<any> => {
+    return prisma.user.findFirst({
+      where: {
+        email,
       },
     });
   },

@@ -66,6 +66,23 @@ export const controllerUsers = {
       });
     }
   },
+  findUserByEmail: async (req: Request, res: Response) => {
+    const { email } = req.body;
+
+    try {
+      const user = await dbUsers.findUserByEmail(email);
+
+      return res.status(200).json({
+        message: "Usuário encontrado com sucesso!",
+        data: user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao buscar usuário!",
+        data: {},
+      });
+    }
+  },
   update: async (req: Request, res: Response) => {
     const {
       params: { id },
