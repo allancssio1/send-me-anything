@@ -14,6 +14,7 @@ routes.get(
 routes.get("/products/sender/:id", controllerProducts.findProductBySendedId);
 routes.put("/products/:id", ValidationBody, controllerProducts.update);
 routes.delete("/products/:id", controllerProducts.delete);
+routes.patch("/products/:id", controllerProducts.cancel);
 
 routes.post("/users/create", ValidationBody, controllerUsers.create);
 routes.put("/users/:id", ValidationBody, controllerUsers.update);

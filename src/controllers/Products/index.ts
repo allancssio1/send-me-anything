@@ -159,6 +159,38 @@ export const controllerProducts = {
       });
     }
   },
+  cancel: async (req: Request, res: Response) => {
+    const {
+      params: { id },
+    } = req;
+
+    try {
+      const product = await dbProduct.findProductById(id);
+
+      if (!product)
+        return res.status(404).json({
+          message: "Produto não encontrado!",
+          data: {},
+        });
+
+      const updatedProduct = {
+        ...product,
+        canceled: true,
+      };
+
+      await dbProduct.updateProduct(updatedProduct);
+
+      return res.status(200).json({
+        message: "Sucesso ao atualizar o produto!",
+        data: updatedProduct,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao atualizar usuário!",
+        data: {},
+      });
+    }
+  },
   delete: async (req: Request, res: Response) => {
     const { id } = req.params;
 
