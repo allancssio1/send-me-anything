@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { db } from "../../models/products";
+import { dbProduct } from "../../models/products";
 
 export const controllerProducts = {
   create: async (req: Request, res: Response) => {
@@ -8,7 +8,7 @@ export const controllerProducts = {
     return res.send("create");
   },
   getAll: async (req: Request, res: Response) => {
-    const productis = await db.getAllProduct();
+    const productis = await dbProduct.getAllProduct();
     return res.json(productis);
   },
   findProductById: (req: Request, res: Response) => {

@@ -21,9 +21,12 @@ export const controllerUsers = {
           email: user.email,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       return res.status(500).json({
-        message: "Erro ao criar usuário!",
+        message:
+          error.meta && error.meta.target && error.meta.target[0]
+            ? `O ${error.meta.target[0]} é inválido, tente outro!`
+            : `Erro ao criar usuário!`,
         data: {},
       });
     }
@@ -99,14 +102,14 @@ export const controllerUsers = {
     try {
       const user = await dbUsers.findUserById(id);
 
-      if (!user[0])
+      if (!user)
         return res.status(404).json({
           message: "Usuário não encontrado!",
           data: {},
         });
 
       const updatedUser = {
-        ...user[0],
+        ...user,
         name: body && body.name ? body.name : user.name,
         email: body && body.email ? body.email : user.email,
         address: body && body.address ? body.address : user.address,
@@ -132,7 +135,7 @@ export const controllerUsers = {
     try {
       const user = await dbUsers.findUserById(id);
 
-      if (!user[0]) {
+      if (!user) {
         return res.status(404).json({
           message: "Usuário não encontrado!",
           data: {},
@@ -151,7 +154,5 @@ export const controllerUsers = {
         data: {},
       });
     }
-
-    return res.send("delete");
   },
 };

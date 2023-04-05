@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export const dbProduct = {
   createProduct: async (body: any): Promise<any> => {},
-  getAllProduct: () => {
-    return prisma.product.findMany();
+  getAllProduct: async (): Promise<any> => {
+    return await prisma.product.findMany();
   },
 };
