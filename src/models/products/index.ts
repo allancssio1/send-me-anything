@@ -32,5 +32,9 @@ export const dbProduct = {
       data: body,
     });
   },
-  deleteProduct: async (id: string): Promise<any> => {},
+  deleteProduct: async (id: string): Promise<void> => {
+    await prisma.product.delete({
+      where: { id },
+    });
+  },
 };

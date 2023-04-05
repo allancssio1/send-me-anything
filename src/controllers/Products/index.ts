@@ -175,12 +175,12 @@ export const controllerProducts = {
       await dbProduct.deleteProduct(id);
 
       return res.status(200).json({
-        message: "Usuário deletado com sucesso!",
+        message: "Produto deletado com sucesso!",
         data: {},
       });
     } catch (error) {
       return res.status(500).json({
-        message: "Erro ao deletar usuário!",
+        message: "Erro ao deletar produto!",
         data: {},
       });
     }
