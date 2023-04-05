@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { dbUsers } from "../../models/users";
+import { getAddress } from "../../utils/getAddress";
 
 export const controllerUsers = {
   create: async (req: Request, res: Response) => {
@@ -12,7 +13,9 @@ export const controllerUsers = {
       });
 
     try {
-      const user = await dbUsers.createUser(body);
+      const addressComplement = await getAddress(body.code);
+
+      const user = await dbUsers.createUser({ ...body, ...addressComplement });
 
       return res.status(201).json({
         message: "Usuário criado com sucesso",
@@ -107,9 +110,11 @@ export const controllerUsers = {
           message: "Usuário não encontrado!",
           data: {},
         });
+      const addressComplement = await getAddress(body.code);
 
       const updatedUser = {
         ...user,
+        ...addressComplement,
         name: body && body.name ? body.name : user.name,
         email: body && body.email ? body.email : user.email,
         address: body && body.address ? body.address : user.address,
